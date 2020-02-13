@@ -140,7 +140,7 @@ class Blackjack():
             self.playerSplitBool = True
             self.hit()
         else:
-            print("You can't do that bitch.")
+            print("You can't do that.")
 
 
 blackjack = Blackjack(8)
@@ -149,62 +149,82 @@ play = True
 rounds = 0
 loggedIn = False
 
-while not loggedIn
-
 while True:
-    decision = input("Do you want to play (Y/N): ")
-    if decision.lower() == "n":
-        break
 
-    blackjack.deal(1)
-
-    while blackjack.playerTotal < 21:
-        time.sleep(1)
-        move = input("What do you want to do? (Hit/Stand/Double Down/Split): ").lower()
-        if move == "hit":
-            blackjack.hit()
-        elif move == "stand":
+    while not loggedIn:
+        username = input("Please enter your username: ")
+        player = scoring.Scoring(username)
+        existingPlayer = player.findPlayer()
+        if existingPlayer:
+            player.login()
             break
-        elif move == "double down":
-            blackjack.doubleDown()
-        elif move == "split":
-            blackjack.split()
-        time.sleep(1)
-        print("Your total value is:", blackjack.countPlayer())
+        else:
+            choice = input("Would you like to create the account %s? (Y/N): ").lower()
+            if choice == "y":
+                player.createPlayer()
+            else:
+                choice = input("Would you like to quit? (Y/N): ")
+                if choice == "y":
+                    break
 
-    if blackjack.playerTotal == 21:
+
+
+
+
+    while True:
+        decision = input("Do you want to play (Y/N): ")
+        if decision.lower() == "n":
+            break
+
+        blackjack.deal(1)
+
+        while blackjack.playerTotal < 21:
+            time.sleep(1)
+            move = input("What do you want to do? (Hit/Stand/Double Down/Split): ").lower()
+            if move == "hit":
+                blackjack.hit()
+            elif move == "stand":
+                break
+            elif move == "double down":
+                blackjack.doubleDown()
+            elif move == "split":
+                blackjack.split()
+            time.sleep(1)
+            print("Your total value is:", blackjack.countPlayer())
+
+        if blackjack.playerTotal == 21:
+            time.sleep(2)
+            print("\nYou got blackjack!")
+            player.saveUser(1, 0, 0)
+
+        if blackjack.playerTotal > 21:
+            time.sleep(2)
+            print("\nYou went bust.")
+
+        while blackjack.dealerTotal < 17:
+            time.sleep(1)
+            blackjack.dealerHit()
+            time.sleep(1)
+            print("The dealer has:", blackjack.countDealer())
+
         time.sleep(2)
-        print("\nYou got blackjack!")
-        playerScore = playerScore + 1
 
-    if blackjack.playerTotal > 21:
+        if blackjack.playerTotal > blackjack.dealerTotal and blackjack.playerTotal < 21:
+            player.saveUser(1, 0, 0)
+            print("\nYou won the round!")
+        elif blackjack.dealerTotal > 21:
+            player.saveUser(1, 0, 0)
+            print("\nThe dealer went bust.")
+        elif blackjack.playerTotal < blackjack.dealerTotal and blackjack.dealerTotal <= 21 and blackjack.playerTotal < 21:
+            print("\nYou lost to the dealer.")
+
+        rounds = rounds + 1
+        blackjack.reset()
+        time.sleep(1)
+        print("\nYou have won", playerScore, "and have played", rounds, "rounds.\n")
         time.sleep(2)
-        print("\nYou went bust.")
 
-    while blackjack.dealerTotal < 17:
-        time.sleep(1)
-        blackjack.dealerHit()
-        time.sleep(1)
-        print("The dealer has:", blackjack.countDealer())
-
-    time.sleep(2)
-
-    if blackjack.playerTotal > blackjack.dealerTotal and blackjack.playerTotal < 21:
-        playerScore = playerScore + 1
-        print("\nYou won the round!")
-    elif blackjack.dealerTotal > 21:
-        playerScore = playerScore +1
-        print("\nThe dealer went bust.")
-    elif blackjack.playerTotal < blackjack.dealerTotal and blackjack.dealerTotal <= 21 and blackjack.playerTotal < 21:
-        print("\nYou lost to the dealer.")
-
-    rounds = rounds + 1
-    blackjack.reset()
-    time.sleep(1)
-    print("\nYou have won", playerScore, "and have played", rounds, "rounds.\n")
-    time.sleep(2)
-
-print("Overall stats:")
+    print("Overall stats:")
 
 
 
