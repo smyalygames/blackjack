@@ -144,13 +144,10 @@ class Blackjack():
 
 
 blackjack = Blackjack(8)
-playerScore = 0
 play = True
-rounds = 0
 loggedIn = False
 
 while True:
-
     while not loggedIn:
         username = input("Please enter your username: ")
         player = scoring.Scoring(username)
@@ -159,7 +156,7 @@ while True:
             player.login()
             break
         else:
-            choice = input("Would you like to create the account %s? (Y/N): ").lower()
+            choice = input("Would you like to create the account %s? (Y/N): " % username).lower()
             if choice == "y":
                 player.createPlayer()
             else:
@@ -167,9 +164,7 @@ while True:
                 if choice == "y":
                     break
 
-
-
-
+    player.stats()
 
     while True:
         decision = input("Do you want to play (Y/N): ")
@@ -218,13 +213,15 @@ while True:
         elif blackjack.playerTotal < blackjack.dealerTotal and blackjack.dealerTotal <= 21 and blackjack.playerTotal < 21:
             print("\nYou lost to the dealer.")
 
-        rounds = rounds + 1
+        player.saveUser(0, 0, 1)
         blackjack.reset()
         time.sleep(1)
-        print("\nYou have won", playerScore, "and have played", rounds, "rounds.\n")
-        time.sleep(2)
+        player.stats()
+        #time.sleep(2)
 
-    print("Overall stats:")
+    decision = input("Do you want to quit? (Y/N): ").lower()
+    if decision == "y":
+        break
 
 
 

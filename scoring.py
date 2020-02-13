@@ -35,12 +35,12 @@ class Scoring():
 
     def createPlayer(self):
         if self.doesntExist:
-            password2 = ""
+            password2 = "."
             print("Please enter the password you wish to have for this account.")
-            while self.password != password2 and self.password > 0:
-                self.password = getpass.getpass()
-                self.password2 = getpass.getpass()
-                if self.password != password2:
+            while self.user[1] != password2:
+                self.user[1] = getpass.getpass()
+                password2 = getpass.getpass()
+                if self.user[1] != password2:
                     print("You didn't enter the passwords correctly.")
             self.scores.append(self.user)
             self.save()
@@ -50,21 +50,28 @@ class Scoring():
 
     def login(self):
         password2 = ""
-        while self.password != password2:
+        while self.user[1] != password2:
             password2 = getpass.getpass()
-            if self.password != password2:
+            if self.user[1] != password2:
                 print("You entered your password incorrectly.")
         print("Logged in successfully")
         return True
 
     def saveUser(self, totalScore, money, totalRounds):
-        self.user[1] += totalScore
-        self.user[2] += money
-        self.user[3] += totalRounds
-        if self.findPlayer():
+        self.user[2] += totalScore
+        self.user[3] += money
+        self.user[4] += totalRounds
+        foundPlayer = self.findPlayer()
+        if foundPlayer:
             self.save()
         else:
             print("Error whilst saving - didn't save.")
+
+    def stats(self):
+        print("Your overall statistics:")
+        print("You have £" + self.user[3])
+        print("You have won", self.user[2], "rounds.")
+        print("You have played", self.user[4], "rounds.")
 
     def destroyData(self, boolean):
         confirmation = input("Are you sure you want to destroy the data?: 'Yes' to confirm: ")
