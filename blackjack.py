@@ -1,6 +1,7 @@
 import random
 import time
 import card
+import scoring
 
 #Here is some boomer reading for this shit: https://en.wikipedia.org/wiki/Blackjack#Rules_of_play_at_casinos
 
@@ -146,6 +147,9 @@ blackjack = Blackjack(8)
 playerScore = 0
 play = True
 rounds = 0
+loggedIn = False
+
+while not loggedIn
 
 while True:
     decision = input("Do you want to play (Y/N): ")
