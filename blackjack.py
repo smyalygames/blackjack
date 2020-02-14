@@ -166,7 +166,9 @@ while True:
 
     while True:
         won = False
+        wonSplit = False
         tie = False
+        tieSplit = False
         decision = input("Do you want to play (Y/N): ")
         if decision.lower() == "n":
             break
@@ -186,9 +188,12 @@ while True:
             elif move == "double down":
                 blackjack.doubleDown()
             elif move == "split":
+                betSplit = round(float(input("Please make your bet on the split: ")), 2)
                 blackjack.split()
             time.sleep(1)
             print("Your total value is:", blackjack.countPlayer())
+            if blackjack.playerSplitBool:
+                #FINISH THE CODE HERE
 
         if blackjack.playerTotal == 21:
             time.sleep(2)
@@ -207,7 +212,7 @@ while True:
 
         time.sleep(2)
 
-        if blackjack.dealerTotal < blackjack.playerTotal < 21:
+        if blackjack.dealerTotal < blackjack.playerTotal < 21 or (blackjack.dealerTotal > 21 and blackjack.playerTotal < 21):
             print("\nYou won the round!")
             won = True
         elif blackjack.dealerTotal > 21:
@@ -222,12 +227,53 @@ while True:
             moneyWon = bet*1.5
             player.saveUser(1, moneyWon, 0)
             print("You won £%.2f!" % moneyWon)
-        if tie:
+        elif tie:
             print("You got your money back.")
         else:
             moneyWon = -bet
             player.saveUser(0, moneyWon, 0)
             print("You lost £%.2f" % bet)
+
+        if blackjack.playerSplitBool:
+            if blackjack.playerSplitTotal == 21:
+                time.sleep(2)
+                print("\nYou got blackjack!")
+                wonSplit = True
+
+            if blackjack.playerSplitTotal > 21:
+                time.sleep(2)
+                print("\nYou went bust.")
+
+            while blackjack.dealerTotal < 17:
+                time.sleep(1)
+                blackjack.dealerHit()
+                time.sleep(1)
+                print("The dealer has:", blackjack.countDealer())
+
+            time.sleep(2)
+
+            if blackjack.dealerTotal < blackjack.playerSplitTotal < 21 or (
+                    blackjack.dealerTotal > 21 and blackjack.playerSplitTotal < 21):
+                print("\nYou won the round!")
+                wonSplit = True
+            elif blackjack.dealerTotal > 21:
+                print("\nThe dealer went bust.")
+            elif blackjack.playerSplitTotal < blackjack.dealerTotal <= 21 and blackjack.playerSplitTotal < 21:
+                print("\nYou lost to the dealer.")
+            elif blackjack.playerSplitTotal == blackjack.dealerTotal and blackjack.playerSplitTotal < 21:
+                print("\nYou tied.")
+                tieSplit = True
+
+            if wonSplit:
+                moneyWon = betSplit * 1.5
+                player.saveUser(1, moneyWon, 0)
+                print("You won £%.2f from your split!" % moneyWon)
+            elif tieSplit:
+                print("You got your money back from your split.")
+            else:
+                moneyWon = -betSplit
+                player.saveUser(0, moneyWon, 0)
+                print("You lost £%.2f from your split." % betSplit)
 
         player.saveUser(0, 0, 1)
         blackjack.reset()
