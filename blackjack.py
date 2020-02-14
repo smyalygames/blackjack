@@ -3,7 +3,6 @@ import time
 import card
 import scoring
 
-#Here is some boomer reading for this shit: https://en.wikipedia.org/wiki/Blackjack#Rules_of_play_at_casinos
 
 class Blackjack():
     def __init__(self, size):
@@ -61,7 +60,6 @@ class Blackjack():
         self.playerSplitBool = False
         self.playerDouble = False
         self.dealerDeck = []
-
 
         self.playerTotal = 0
         self.playerSplitTotal = 0
@@ -167,9 +165,14 @@ while True:
     player.stats()
 
     while True:
+        won = False
+        tie = False
         decision = input("Do you want to play (Y/N): ")
         if decision.lower() == "n":
             break
+
+        bet = round(float(input("Please make your bet: ")), 2)
+        print(bet)
 
         blackjack.deal(1)
 
@@ -190,7 +193,7 @@ while True:
         if blackjack.playerTotal == 21:
             time.sleep(2)
             print("\nYou got blackjack!")
-            player.saveUser(1, 0, 0)
+            won = True
 
         if blackjack.playerTotal > 21:
             time.sleep(2)
@@ -204,20 +207,35 @@ while True:
 
         time.sleep(2)
 
-        if blackjack.playerTotal > blackjack.dealerTotal and blackjack.playerTotal < 21:
-            player.saveUser(1, 0, 0)
+        if blackjack.dealerTotal < blackjack.playerTotal < 21:
             print("\nYou won the round!")
+            won = True
         elif blackjack.dealerTotal > 21:
-            player.saveUser(1, 0, 0)
             print("\nThe dealer went bust.")
-        elif blackjack.playerTotal < blackjack.dealerTotal and blackjack.dealerTotal <= 21 and blackjack.playerTotal < 21:
+        elif blackjack.playerTotal < blackjack.dealerTotal <= 21 and blackjack.playerTotal < 21:
             print("\nYou lost to the dealer.")
+        elif blackjack.playerTotal == blackjack.dealerTotal and blackjack.playerTotal < 21:
+            print("\nYou tied.")
+            tie = True
+
+        if won:
+            moneyWon = bet*1.5
+            player.saveUser(1, moneyWon, 0)
+            print("You won £%.2f!" % moneyWon)
+        if tie:
+            print("You got your money back.")
+        else:
+            moneyWon = -bet
+            player.saveUser(0, moneyWon, 0)
+            print("You lost £%.2f" % bet)
 
         player.saveUser(0, 0, 1)
         blackjack.reset()
         time.sleep(1)
+        print("")
         player.stats()
-        #time.sleep(2)
+        print("")
+        time.sleep(2)
 
     decision = input("Do you want to quit? (Y/N): ").lower()
     if decision == "y":
@@ -245,15 +263,4 @@ Split: If the first two cards of a hand have the same value, the player can spli
 Signal: Place additional chips next to the original bet outside the betting box; point with two fingers spread into a V formation.
 Surrender (only available as first decision of a hand): Some games offer the option to "surrender" directly after the dealer has checked for blackjack (see below for variations). When the player surrenders, the house takes half the player's bet and returns the other half to the player; this terminates the player's interest in the hand.
 Signal: The request to surrender is made verbally, there being no standard hand signal.
-'''
-
-
-'''
-#Some debugging code here
-deck = card.Deck()
-deck.createDiamonds()
-deck.shuffle()
-deck.showDeck()
-deck.destroyDeck()
-deck.showDeck()
 '''

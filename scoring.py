@@ -69,7 +69,7 @@ class Scoring():
 
     def stats(self):
         print("Your overall statistics:")
-        print("You have £" + self.user[3])
+        print("You have £%.2f" % self.user[3])
         print("You have won", self.user[2], "rounds.")
         print("You have played", self.user[4], "rounds.")
 
