@@ -17,6 +17,7 @@ class Blackjack():
         self.playerSplit = []
         self.playerSplitBool = False
         self.playerDouble = False
+        self.playerSplitDouble = False
         self.dealerDeck = []
 
         self.playerTotal = 0
@@ -59,6 +60,7 @@ class Blackjack():
         self.playerSplit = []
         self.playerSplitBool = False
         self.playerDouble = False
+        self.playerSplitDouble = False
         self.dealerDeck = []
 
         self.playerTotal = 0
@@ -132,6 +134,11 @@ class Blackjack():
         self.playerDouble = True
         self.stand()
 
+    def doubleDownSplit(self):
+        self.playerSplit.append(self.deck.takeCard())
+        self.playerSplitDouble = True
+        self.stand()
+
     def split(self):
         if self.playerDeck[0].value == self.playerDeck[1].value and len(self.playerDeck) == 2:
             self.playerSplit.append(self.playerDeck.pop())
@@ -177,23 +184,42 @@ while True:
         print(bet)
 
         blackjack.deal(1)
+        splitStand = False
+        stand = False
 
-        while blackjack.playerTotal < 21:
+        while (blackjack.playerTotal < 21 or (blackjack.playerSplitTotal <21 and blackjack.playerSplitBool)) and (not stand or not splitStand):
             time.sleep(1)
             move = input("What do you want to do? (Hit/Stand/Double Down/Split): ").lower()
-            if move == "hit":
-                blackjack.hit()
-            elif move == "stand":
-                break
-            elif move == "double down":
-                blackjack.doubleDown()
-            elif move == "split":
-                betSplit = round(float(input("Please make your bet on the split: ")), 2)
-                blackjack.split()
+            if not stand:
+                if move == "hit":
+                    blackjack.hit()
+                elif move == "stand":
+                    stand = True
+                elif move == "double down":
+                    blackjack.doubleDown()
+                    stand = True
+                    bet = bet*2
+                    stand = True
+                elif move == "split":
+                    betSplit = round(float(input("Please make your bet on the split: ")), 2)
+                    blackjack.split()
             time.sleep(1)
             print("Your total value is:", blackjack.countPlayer())
-            if blackjack.playerSplitBool:
-                #FINISH THE CODE HERE
+            if blackjack.playerSplitBool and not splitStand:
+                time.sleep(1)
+                move = input("What do you want to do to your stack? (Hit/Stand/Double Down/Split): ").lower()
+                if move == "hit":
+                    blackjack.hitSplit()
+                elif move == "stand":
+                    splitStand = True
+                    break
+                elif move == "double down":
+                    blackjack.doubleDownSplit()
+                    betSplit = betSplit*2
+                    splitStand = True
+                time.sleep(1)
+                print("Your total value is:", blackjack.countPlayer())
+
 
         if blackjack.playerTotal == 21:
             time.sleep(2)
