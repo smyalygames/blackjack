@@ -4,6 +4,7 @@ import os.path
 
 
 class Scoring():
+
     def __init__(self, playerID):
         self.playerID = playerID
         self.password = ""
