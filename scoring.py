@@ -1,5 +1,6 @@
 import json
 import getpass
+import os.path
 
 
 class Scoring():
@@ -11,6 +12,10 @@ class Scoring():
         self.totalRounds = 0
 
         self.user = [self.playerID, self.password, self.totalScore, self.money, self.totalRounds]
+
+        while not os.path.exists("score.txt"):
+            with open("score.txt", "w") as file:
+                json.dump([], file)
 
         with open("score.txt", "r") as file:
             self.scores = json.load(file)

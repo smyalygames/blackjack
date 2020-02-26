@@ -187,7 +187,7 @@ while True:
         splitStand = False
         stand = False
 
-        while (blackjack.playerTotal < 21 or (blackjack.playerSplitTotal <21 and blackjack.playerSplitBool)) and (not stand or not splitStand):
+        while (blackjack.playerTotal < 21 or (blackjack.playerSplitTotal <21 and blackjack.playerSplitBool)) and (not stand or (blackjack.playerSplitBool and not splitStand)):
             time.sleep(1)
             move = input("What do you want to do? (Hit/Stand/Double Down/Split): ").lower()
             if not stand:
