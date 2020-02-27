@@ -181,7 +181,6 @@ while True:
             break
 
         bet = round(float(input("Please make your bet: ")), 2)
-        print(bet)
 
         blackjack.deal(1)
         splitStand = False
