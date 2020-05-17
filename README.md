@@ -9,5 +9,7 @@ There will be some periodic updates to this game, when I do get the time for it.
 Some of the planned updates with no ETA at all:
 
   -Automatic Updates
+  
   -Online login system
+  
   -Potentially a multiplayer system
