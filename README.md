@@ -2,7 +2,7 @@
 I made this game to practice programming wiht Python and using OOP.
 
 ## Download
-You can find the download [here](https://smyalygames.com/software.html)
+You can find the download [here](https://smyalygames.com/software.php)
 
 ## Updates
 There will be some periodic updates to this game, when I do get the time for it.
